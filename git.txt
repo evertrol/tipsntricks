@@ -1,0 +1,426 @@
+Tutorials, blogs, others on GIT
+-------------------------------
+
+http://git-scm.com/
+
+http://365git.tumblr.com/
+
+http://stackoverflow.com/questions/tagged/git
+
+
+
+Setting up
+----------
+
+Start a repository: git init
+
+Push to repo: git push origin master
+
+Revert a file: git checkout -- <filename>
+
+See also http://stackoverflow.com/questions/692246/git-how-to-undo-changes-of-one-file
+
+Git workflow
+------------
+
+See http://stackoverflow.com/questions/457927/git-workflow-and-rebase-vs-merge-questions
+
+Basically:
+
+(master)
+git fetch upstream
+git merge upstream/master
+git checkout -b feature
+
+# on branch feature
+<hack hack commit hack hack commit>
+
+# When status is clean, go back to master
+git checkout master
+
+# Update master
+git fetch origin
+git merge origin/master
+
+# The following 2 are optional
+git fetch upstream
+git merge upstream/master
+
+# Back to feature, and update from master
+git checkout feature
+git rebase master
+<hack hack commit some more>
+
+# Back to master, merge feature
+git checkout master
+git merge feature
+
+# If we're happy, remove feature branch
+git branch -d feature
+
+# Get master up to date again
+git fetch upstream
+git merge upstream/master
+
+# And push
+git push
+
+
+Show log between dates
+----------------------
+
+$ git log --since="2013-4-1" --until="2013-5-1"
+
+Adding an 'origin' remotes for an existing repository
+-----------------------------------------------------
+
+$ git remote add origin git@<hostname>/<reponame>
+
+Verify:
+
+$ git remote -v
+
+Push repository
+
+$ git push origin master
+
+From elsewhere, you can now do:
+
+$ git clone git@<hostname>:<reponame>
+
+(note the colon between the host and repository names)
+
+Set an extra remote
+~~~~~~~~~~~~~~~~~~~
+
+You can set other remotes, for example to pull in branches that are
+not in the main repository
+
+$ git remote add <name> <path>
+
+list remotes
+
+$ git remote
+
+check settings (what is allowed)
+
+$ git remote -v
+
+pull in changes
+
+$ git pull <name> <branch>
+
+More at http://git-scm.com/book/en/Git-Basics-Working-with-Remotes
+
+Fetch/pull
+----------
+
+Fetch incoming, without merging:
+
+ git fetch
+
+ git log ..origin/master
+
+Then merge:
+
+ git merge
+
+Pull and merge automatically:
+
+ git pull
+
+See also http://longair.net/blog/2009/04/16/git-fetch-and-merge/
+
+Git add
+-------
+
+git add -A stages All
+
+git add . stages new and modified, without deleted
+
+git add -u stages modified and deleted, without new
+
+Add partial changes in a file
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+git add -p <filename>
+
+Also: git add -i / git add -e
+
+-p also works for git reset and git checkout
+
+http://book.git-scm.com/4_interactive_adding.html
+
+http://stackoverflow.com/questions/2003491/git-how-to-commit-partial-changes
+
+Git aliases
+-----------
+
+Show current aliases:
+
+$ git alias
+
+Add new (global) aliases:
+
+$ git config --global alias.ci commit
+
+$ git config --global alias.cmas 'checkout master'
+
+$ git config --global alias.unstage  'reset HEAD --'
+
+$ git config --global alias.stat status
+
+$ git config --global alias.amend 'commit --amend --no-edit'
+
+
+Git diff
+--------
+
+git diff --cached / git diff --staged: show differences for staged
+files (useful in case of partial adds).
+
+git diff head: see all changes between current and HEAD.
+
+git diff --name-only: show only the names of the files that differ.
+
+git diff <hash1> <hash2>: difference between 2 commits
+
+
+Amend a previous commit
+-----------------------
+
+(git stash)
+
+git rebase <hash>^ --interactive
+
+<change 'pick' to 'edit' in the editor that comes up, save and exit
+the editor>
+
+git add/whatever file
+
+git commit --amend
+
+git rebase --continue   # to get back
+
+(git stash pop)
+
+See also eg http://stackoverflow.com/questions/1186535/how-to-modify-a-specified-commit
+
+Rebase & merge conflicts
+------------------------
+
+Three options:
+
+- Edit manually
+
+- when merging: git checkout --ours will solve the conflict using the
+  version of your HEAD (the branch you're merging into) while --theirs
+  will solve the conflict using the version your are merging into your
+  HEAD.
+
+- when rebasing: selecting --mine will solve the conflict using the
+  version you rebase on top of your current HEAD while --theirs will
+  solve the conflict using the version you rebase onto your HEAD.
+
+When done,  ‘git add’ the file.
+
+For rebasing, now do ‘git rebase --continue’.
+
+
+Change current branch to master
+-------------------------------
+
+http://stackoverflow.com/questions/2763006/change-the-current-branch-to-master-in-git :
+
+git checkout better_branch
+
+git merge --strategy=ours master    # keep the content of this branch, but record a merge
+
+git checkout master
+
+git merge better_branch             # fast-forward master up to the merge
+
+
+
+Serving a GIT repository
+------------------------
+
+git daemon --reuseaddr --base-path=. --export-all --verbose
+
+
+Remove a file from (all) commits
+--------------------------------
+
+http://help.github.com/remove-sensitive-data/
+
+See also the examples for $ git filter-branch --help
+
+
+
+Git SVN
+-------
+
+Start up: mkdir git-svn; cd git-svn; git svn init
+http://<hostname>/<directory>/<subdir>/trunk; git svn fetch; git svn
+rebase
+
+Update from SVN repo: git svn rebase
+
+hack hack -> git add -> git commit
+
+Update to SVN repo: git svn dcommit
+
+Use git svn dcommit --rmdir to remove empty directories (git ignores
+them, SVN wants to remove them).
+
+
+Work on a separate branch
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+$ git checkout -b new_branch
+
+<hack hack commit, hack hack commit, hack hack commit, etc.>
+
+$ git checkout master
+
+$ git merge new_branch   # bring master up to date with development
+
+$ git svn rebase    # bring master up to date with svn repo
+
+$ git svn dcommit --rmdir # --rmdir, because git automatically ignores
+empty directories, while svn doesn’t
+
+$ git checkout new_branch
+
+# bring development branch up to date with svn repo; not merge!
+$ git rebase
+
+
+Examples are plenty around, but few have the last steps. Ones that have:
+
+http://anders.janmyr.com/2010/09/using-git-with-subversion.html
+
+
+
+Git flow
+--------
+
+$ git flow init
+
+Answer questions; just use defaults.
+
+You're now on the 'develop' branch. Hack away.
+
+Implementing a new feature (eg, creating a library section):
+
+$ git flow feature start library
+
+hack hack hack
+
+$ git flow feature finish library
+
+(merging back into 'develop')
+
+Create a release version
+
+$ git flow release start v0.1.0
+
+last hacks / bug fixes
+
+$ git flow release finish v0.1.0
+
+(merging back into 'master')
+
+
+Git tags
+--------
+
+http://learn.github.com/p/tagging.html
+
+Annotated tag: git tag -a v1.4 -m 'version 1.4'
+
+
+
+Create a new remote branch, with tracking:
+$ git push -u origin newfeature
+
+Delete a remote branch:
+$ git push origin :branch_to_delete
+
+Rename a branch:
+$ git branch -m oldname newname
+
+
+
+Show ignored files:
+$ git clean -ndX
+http://stackoverflow.com/questions/466764/show-ignored-files-in-git
+
+
+Testing a pull request
+----------------------
+
+# Make sure your master is up to date
+$ git checkout master
+
+(master) $ git fetch upstream
+
+(master) $ git merge upstream/master
+
+# Now check the pull request
+(master) $ git checkout -b <pull request by someone>
+
+$ git remote add <someone> <path/url>
+
+$ git fetch <someone>
+
+$ git merge <someone>/<branch from which pull request was submitted>
+
+# Now test the software: build, install, unit test, ...
+
+# If all works fine, you can go back to your master, delete the <pull
+# request by someone> branch and merge the request.
+
+
+Show whitespace differences
+---------------------------
+
+git diff --color
+
+But when (trailing) whitespace was removed, diff will not show this.
+Reverse the comparison:
+
+git diff --color -R
+
+See also http://stackoverflow.com/questions/5257553/coloring-white-space-in-git-diffs-output
+
+Amend with the same commit message and no editor pop-up
+-------------------------------------------------------
+
+git commit --amend --no-edit
+
+Create an alias called 'amend':
+
+git config --global alias.amend 'commit --amend --no-edit'
+
+
+See also http://stackoverflow.com/questions/10237071/git-commit-amend-use-existing-message-no-editor-interaction
+
+
+
+Gitolite, set up a new repository
+---------------------------------
+
+$ cd gitolite-admin/conf
+
+Add new repository with user permissions::
+
+    repo nonlinearity
+
+       RW+     =   <username1>
+
+       RW      =   <username2>
+
+$ git add; git commit -m"..."; git push
+
+Set origin for current repository (add remote)
