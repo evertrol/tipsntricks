@@ -164,7 +164,7 @@ Add new (global) aliases:
 
 $ git config --global alias.ci commit
 
-$ git config --global alias.cmas 'checkout master'
+$ git config --global alias.chmas 'checkout master'
 
 $ git config --global alias.unstage  'reset HEAD --'
 
