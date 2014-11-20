@@ -413,7 +413,7 @@ http://stackoverflow.com/questions/927358/how-to-undo-the-last-git-commit
 
 $ git reset --soft 'HEAD^'
 
-edit 
+edit
 
 $ git add ...
 
@@ -427,6 +427,14 @@ http://stackoverflow.com/questions/3528245/whats-the-difference-between-git-rese
 Note 2: HEAD~n means the commit's nth ancestor. HEAD^n means the
 current commit's nth parent. HEAD~ and HEAD^ are shorthands for HEAD~1
 and HEAD^1.
+
+Show merges between branches
+----------------------------
+
+From http://stackoverflow.com/questions/23343540/did-a-merge-occur-from-a-specific-branch-into-master
+
+$ git rev-list --merges origin/l01bspeedup..origin/master --since 2014-04-04
+
 
 Gitolite, set up a new repository
 ---------------------------------
