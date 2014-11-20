@@ -407,6 +407,26 @@ git config --global alias.amend 'commit --amend --no-edit'
 See also http://stackoverflow.com/questions/10237071/git-commit-amend-use-existing-message-no-editor-interaction
 
 
+Undo the last commit locally
+----------------------------
+http://stackoverflow.com/questions/927358/how-to-undo-the-last-git-commit
+
+$ git reset --soft 'HEAD^'
+
+edit 
+
+$ git add ...
+
+($ git commit -c ORIG_HEAD)
+
+
+Note: --soft keeps changes, while --hard completely resets the
+everything to the commit (here, HEAD's parent).
+http://stackoverflow.com/questions/3528245/whats-the-difference-between-git-reset-mixed-soft-and-hard
+
+Note 2: HEAD~n means the commit's nth ancestor. HEAD^n means the
+current commit's nth parent. HEAD~ and HEAD^ are shorthands for HEAD~1
+and HEAD^1.
 
 Gitolite, set up a new repository
 ---------------------------------
