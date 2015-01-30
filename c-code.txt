@@ -1,0 +1,187 @@
+Some guidelines for C code.
+
+This is not too different from the Linux kernel coding style guide:
+http://www.maultech.com/chrislott/resources/cstyle/LinuxKernelCodingStyle.txt
+
+
+
+Comments
+--------
+
+- Explain a difficult algorithm in the block comment above the
+  function, not in bits and pieces through one-line comments inside
+  the function.
+
+- Don't state the obvious in one-line comments.
+
+- Use one-line comments sparingly
+
+
+Indentation, white space and line length
+----------------------------------------
+
+- Use tabs for indentation. Set them to 8 spaces.
+
+- 79 characters maximum
+
+  While very old-fashioned, this limit, together with the indentation
+  size, almost automatically takes care of the following:
+
+  - deeply nested loops are avoided
+
+  - it is easily possibly to have multiple windows with code, or code
+    with a terminal, directly next to each other.
+
+  - 70-80 characters provides a decent number of characters a person
+    will read ona single line without losing track. This also aligns
+    code automatically with longer comments.
+
+- Preferably use available parenthesis to use automatic line breaking.
+  To match a following line with its previous line, use spaces to
+  match up. E.g.::
+
+      \t func(int a, int b,
+      \t      int c)
+
+
+- Use two empty lines between functions.
+
+- Use an empty line to separate semanticcally different sections
+  inside a function.
+
+
+Braces
+------
+
+- Pick your favourite brace style, but watch out for too much
+  whitespace/too many lines.
+
+  I prefer hanging braces, except for functions.
+
+- Always use braces, also for one-line loops and if-else statements.
+
+  This avoids too many obvious errors.
+
+  Also, hanging braces take up the same amount of lines as no braces
+  at all::
+
+      if (x > 1) {
+              y = 1;
+      } else if (x < -1) {
+              y = -1;
+      } else {
+              y = x;
+      }
+
+- You can work around the `extern "C" {` indentation issue that emacs,
+  and perhaps other editors, has (it wants to indent the following
+  lines, while most people don't want that), using the following::
+
+      #ifdef __cplusplus
+      #define EXTERN_C_BEGIN  extern "C" {
+      #define EXTERN_C_END    }
+      #else
+      #define EXTERN_C_BEGIN
+      #define EXTERN_C_END
+      #endif
+
+
+Variable naming
+---------------
+
+- clear names ('message' is better than 'msg'), but avoid Hungarion
+  notication ('message_str'). Also, don't overdo: use `i` in loops,
+  and in `tmp` versus `temporary`, the former is almost always
+  preferred (or `temp`), since it is so common (often appended with
+  the variable name for which it is temporarily standing in, e.g.
+  `tempx` or `tempy`).
+
+Functions
+---------
+
+- Return 0 for a proper exit, non-zero when an error occurrs (with
+  pre-determined constants telling what the error is).
+
+- In general, don't return anything other than an indicator for
+  succeed or fail (through an integer), except in obvious cases: a
+  function that performs some simple mathematical algorithm on a float
+  would return a float, for example (but once limit or NaN checking
+  gets involved, either errno needs to be used, or an int is returned
+  and the float manipulated through a pointer).
+
+
+
+Memory
+------
+
+- allocate and free memory inside the function where you use it.
+
+- if you want to return memory from a function, allocate (and free)
+  that memory outside that function.
+
+
+Compilation
+-----------
+
+Nowadays, C99 should at least be the standard. Don't code for C89/C90.
+You can set this with -std=c99 for gcc/icc/clang.
+
+Do not use -std=gnuc99. This excludes <random.h> and <argp.h>.
+Instead, use the _XOPEN_SOURCE macro (for example, set it to 700)::
+
+    gcc -std=c99 -D_XOPEN_SOURCE=700
+
+Other useful flags:
+
+* -Wall
+* -Wextra
+* -pedantic
+
+Compilation should proceed without warnings; do not ignore a warning
+unless you know what it is about.
+
+[Scan-build](http://clang-analyzer.llvm.org/scan-build.html) can be
+used to check for possible errors. Scan-build will come up with lots
+of potential memory allocation errors (most of these come from
+premature returns in case of errors); while fixing may feel annoying,
+it does pay off to do so anyway.
+
+Use [valgrind](http://valgrind.org/) where possible; among others, it
+will check for memory leaks. 
+
+Note that the some libraries do not automatically free their
+allocations at the end of a program. This is not an error (when
+exiting the program properly, the OS will free the memory), but it
+results in a lot of extra valgrind messages. You can avoid this using
+a `*.supp` suppression file with the
+[`--suppressions`](http://valgrind.org/docs/manual/manual-core.html#manual-core.suppress)
+option For example, for the netCDF library, I use this::
+
+    {
+       nc_open
+       Memcheck:Leak
+       ...
+       fun:nc_open
+    }
+    
+    {
+       NC4_open
+       Memcheck:Leak
+       ...
+       fun:NC4_open
+    }
+    
+    {
+       NC_open
+       Memcheck:Leak
+       ...
+       fun:NC_open
+    }
+    
+    {
+      nc_rec_read_vars
+      Memcheck:Leak
+      ...
+      fun:nc4_rec_read_vars
+    }
+    
