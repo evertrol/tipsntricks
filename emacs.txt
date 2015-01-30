@@ -1,0 +1,3 @@
+M-: (dotimes (i 20) (insert (format "%2d, " (1+ i))))
+M-: (dotimes (i 20) (insert (format "%2d, " (+ 20 i))))
+(from http://stackoverflow.com/a/1512270/707650 )
