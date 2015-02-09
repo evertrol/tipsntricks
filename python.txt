@@ -1,0 +1,20 @@
+Simple servers
+--------------
+
+HTTP server::
+  
+    python2 -m SimpleHTTPServer <port>
+    python3 -m http.server --help
+
+Note that SimpleHTTPServer doesn't have a `--help`.
+
+Dummy SMTP server::
+
+    sudo python -m smtpd -n -c DebuggingServer localhost:25
+
+which will print the incoming messages and discard.
+
+See https://muffinresearch.co.uk/fake-smtp-server-with-python/ for an
+example to use `smtpd.SMTPServer` with an overridden
+`process_message`.
+
