@@ -7,6 +7,8 @@ http://365git.tumblr.com/
 
 http://stackoverflow.com/questions/tagged/git
 
+https://github.com/agis-/git-style-guide
+
 
 
 Setting up
@@ -452,3 +454,10 @@ Add new repository with user permissions::
 $ git add; git commit -m"..."; git push
 
 Set origin for current repository (add remote)
+
+
+Pull request
+------------
+
+https://developer.atlassian.com/blog/2015/01/a-better-pull-request
+https://github.com/blog/1943-how-to-write-the-perfect-pull-request
