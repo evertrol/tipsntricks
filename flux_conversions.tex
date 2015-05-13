@@ -1,0 +1,432 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage{ifpdf}
+% TeX commands to see if PDFLaTeX is being used
+%\newif\ifpdf
+\ifx\pdfoutput\undefined
+\pdffalse % we are not running PDFLaTeX
+\else
+\pdfoutput=1 % we are running PDFLaTeX
+\pdftrue
+\fi
+
+
+% The graphicx package for including figures
+\usepackage{graphicx}
+% the formats we have images for; checks if we're using PDFLaTeX
+\ifpdf
+\DeclareGraphicsExtensions{.pdf, .jpg, .png, .gif} 
+\else
+\DeclareGraphicsExtensions{.eps, .ps} 
+\fi
+
+% The amsmath package for a lot of special (math-related) symbols
+\usepackage{amsmath}
+
+% The Times package, if we want to use Times instead of the default CMR
+\usepackage{times}
+
+% The hyperref package, if we want to use links in our PDF file
+\usepackage[colorlinks=true,linkcolor=blue]{hyperref}
+
+\usepackage{natbib}
+\bibliographystyle{ads}
+
+% No page numbering
+\pagestyle{plain}
+
+% get rid of those pesky default 1 inch driver margins
+\hoffset -1in
+\voffset -1in
+
+% Best to set the textwidth, and let the margins scale accordingly
+% Text width is set relative to the paperwidth
+% Margins left and right are left equal (not always good, though!)
+\setlength{\textwidth}{.75\paperwidth}
+% Set margins from textwidth automatically
+\setlength{\oddsidemargin}{.5\paperwidth}
+\addtolength{\oddsidemargin}{-.5\textwidth}
+\setlength{\evensidemargin}{\oddsidemargin}
+
+% Similar for the height
+\setlength{\textheight}{.8\paperheight}
+\setlength{\topmargin}{.5\paperheight}
+\addtolength{\topmargin}{-.5\textheight}
+% Uncomment these if you somehow want the header higher up the page
+% Also useful if the header is empty: it shifts the main text up
+%\addtolength{\topmargin}{-\headheight}
+%\addtolength{\topmargin}{-\headsep}
+
+
+% No paragraph indentation
+\setlength{\parindent}{0.3cm}
+
+% New counter type: use symbols for the footnotes
+\renewcommand{\thefootnote}{\ensuremath{\fnsymbol{footnote}}}
+
+
+\newcommand{\mynote}[1]{[\textsf{\textit{#1}}]}
+
+% All those journal abbrevations
+\newcommand{\aj}{{AJ}}         % Astronomical Journal
+\newcommand{\actaa}{{Acta Astron.}}    % Acta Astronomica
+\newcommand{\araa}{{ARA\&A}}          % Annual Review of Astron and Astrophys
+\newcommand{\apj}{{ApJ}}         % Astrophysical Journal
+\newcommand{\apjl}{{ApJ}}          % Astrophysical Journal, Letters
+\newcommand{\apjs}{{ApJS}}          % Astrophysical Journal, Supplement
+\newcommand{\ao}{{Appl.~Opt.}}          % Applied Optics
+\newcommand{\apss}{{Ap\&SS}}          % Astrophysics and Space Science
+\newcommand{\aap}{{A\&A}}          % Astronomy and Astrophysics
+\newcommand{\aapr}{{A\&A~Rev.}}          % Astronomy and Astrophysics Reviews
+\newcommand{\aaps}{{A\&AS}}          % Astronomy and Astrophysics, Supplement
+\newcommand{\mnras}{{MNRAS}}          % Monthly Notices of the RAS
+\newcommand{\na}{{New A}}  % New Astronomy
+\newcommand{\pasp}{{PASP}}          % Publications of the ASP
+\newcommand{\nat}{Nature}       % Nature
+\newcommand{\science}{Science}   % Science
+\newcommand{\jcp}{JCP}         % The Journal of Chemical Physics}
+\newcommand{\gcnc}{GCN Circular}
+\newcommand{\gcnr}{GCN Report}
+\newcommand{\gcn}{\gcnc}
+
+\newcommand{\chisq}{\ensuremath{\chi^{2}_\mathrm{red}}}
+\newcommand{\nh}{\ensuremath{N_{\mathrm{H}}}}
+\newcommand{\ebv}{\ensuremath{E_{B-V}}}
+\newcommand{\G}{\ensuremath{\Gamma}}
+\newcommand{\fv}{\ensuremath{F_{\nu}}}
+\newcommand{\fl}{\ensuremath{F_{\lambda}}}
+\newcommand{\fvz}{\ensuremath{F_{\nu, 0}}}
+\newcommand{\flz}{\ensuremath{F_{\lambda, 0}}}
+\newcommand{\fvc}{\ensuremath{F_{\nu, c}}}
+\newcommand{\fEc}{\ensuremath{F_{E, c}}}
+\newcommand{\pEc}{\ensuremath{P_{E, c}}}
+%\newcommand{\fvc}{\ensuremath{F_{\nu, c}}}
+\newcommand{\cmsq}{\ensuremath{\mathrm{cm}^{-2}}}
+\newcommand{\micron}{\ensuremath{\mu \mathrm{m}}}
+\newcommand{\Angstrom}{{\AA}ngstrom}
+\newcommand{\ergcmsqs}{\ensuremath{\mathrm{erg}\ \mathrm{cm}^{-2}\ \mathrm{s^{-1}}}}
+\newcommand{\jmsqshz}{\ensuremath{\mathrm{J}\ \mathrm{m}^{-2}\ \mathrm{s^{-1}} \mathrm{Hz^{-1}}}}
+\newcommand{\jcmsqshz}{\ensuremath{\mathrm{J\ cm}^{-2}\ \mathrm{s^{-1}} \mathrm{Hz^{-1}}}}
+\newcommand{\ergcmsqshz}{\ensuremath{\mathrm{erg}\ \mathrm{cm}^{-2}\ \mathrm{s^{-1}} \mathrm{Hz^{-1}}}}
+
+
+\newcommand{\swift}{\emph{Swift}}
+
+\newcommand{\arcmin}{\mbox{\ensuremath{^{\prime}}}}
+% farcmin for fractional arcminutes
+\newcommand{\farcmin}{\mbox{\ensuremath{.\!\!^{\prime}}}}
+% as above, but needs 2 arguments: value before and after the floating point
+\newcommand{\farcminarg}[2]{\mbox{\ensuremath{#1.\!\!^{\prime}#2}}}
+\newcommand{\arcsec}{\mbox{\ensuremath{^{\prime\prime}}}}
+% farcsec for fractional arcseconds
+\newcommand{\farcsec}{\mbox{\ensuremath{.\!\!^{\prime\prime}}}}
+% as above, but needs 2 arguments: value before and after the floating point
+\newcommand{\farcsecarg}[2]{\mbox{\ensuremath{#1.\!\!^{\prime\prime}#2}}}
+% +/- for unequal errors
+\newcommand{\plusminus}[2]{\ensuremath{^{+#1}_{-#2}}}
+
+%\newcommand{\url}[1]{\texttt{#1}}
+
+
+\begin{document}
+
+\section*{Preamble}
+
+The word ``unit'' is used throughout this document, perhaps in confusing or even incorrect usage. I nevertheless hope the usage is understandable from the context; corrections and suggestions are, however, certainly appreciated (and not only on the use of ``unit'').
+
+Constants used in this document are listed in Table \ref{table:constants}.
+\begin{table}[h!]
+\begin{tabular}{l|l|l}
+$c$ & speed of light & $2.997925 \times 10^8\ \mathrm{m }^{-1}$ \\
+$h$ & Planck's constant & $6.626 \times 10^{-34}\ \mathrm{J s}$ \\
+$e$ & elementary charge & $1.602167 \times 10^{-19}\ \mathrm{C}$ \\
+\end{tabular}
+\caption{\label{table:constants}Constants used}
+\end{table}
+
+% \begin{list}{$\bullet$}{\setlength{\rightmargin}{0cm} \setlength{\itemsep}{-2mm} \setlength{\leftmargin}{4mm} \setlength{\itemindent}{1mm}}
+% \item[$c$] The speed of light, $c = 2.997925 \times 10^{8} \mathrm{m s^{-1}}$
+% \item[$h$] Planck's constant, $h = 6.626 \times 10^{-34} \mathrm{J s}$
+% \item[$e$] Elementary charge, $e = 1.602167 \times 10^{-19} \mathrm{C}$
+% \end{list}
+
+%All flux units are converted to intermediary SI units of \jmsqshz, from which they are converted to other units as necessary. Similarly, frequency units are first converted to Hz, and onwards from there. 
+
+For the SI impaired, Table \ref{table:comparison} list some conversions between essential cgs and SI units. More conversions are shown below
+\begin{table}[h!]
+\begin{tabular}{l|l|l|l}
+Quantity & SI unit & CGS unit & conversion \\
+\hline
+Energy & Joule (J) & erg & 1 erg = $10^{-7}$ J \\
+Length & meter (m) & centimeter (cm) & 1 cm = $10{-2}$ m \\
+Time & second (s) & second (s) & 1 s = 1 s \\
+Force & Newton (N) & dyne & 1 dyne = $10^{-5}$ N \\
+\end{tabular}
+\caption{\label{table:comparison}Comparison of basic SI and cgs units}
+\end{table}
+
+\section*{Frequency conversions}
+
+``Frequency'' units can be expressed in frequency $\nu$, wavelength $\lambda$ or energy $E$, or variants thereof. 
+%Accepted units are Hertz (Hz), kHz, MHz and GHz; meter (m), cm, \micron\ (micron) and {\AA}ngstrom (\AA); Joule (J), electron volt (eV), keV, MeV and GeV.
+
+Conversion from wavelength to frequency follows $\nu = \frac{c}{\lambda}$; the inverse is of course $\lambda = \frac{c}{\nu}$. Conversion from energy to frequency is even more straightforward: $\nu = E / h$. If the frequency is expressed in energy, eg in eV, it becomes $\nu = \mathrm{eV} / h * e$ (for these conversions, see also Table \ref{table:energyconversion}).
+
+\begin{table}
+\begin{tabular}{c|c|c}
+from & to & multiply by \\
+\hline
+Joule (J) & erg & $10^{-7}$ \\
+Joule (J) & Hz & $1/h$ = $1.509 \times 10^{33}$ \\
+Joule (J) & eV & $1/e$ = $6.242 \times 10^{18}$ \\
+erg & Hz & $1/h \times 10^7$ = $1.509 \times 10^{40}$ \\
+erg & eV & $1/e \times 10^7$ = $6.242 \times 10^{25}$ \\
+Hz & eV & $h / e = 4.136 \times 10^{-15}$ \\
+\end{tabular}
+\caption{\label{table:energyconversion}
+Some energy conversions}
+\end{table}
+
+
+
+For errors that go with a measured value, one has to take into account the fact that a unit of frequency $\delta \nu \neq \delta \lambda$. Wavelength errors to frequency: $\Delta \nu = \frac{c}{\lambda^2} \Delta \lambda$, and the inverse $\Delta \lambda = \frac{c}{\nu^2} \Delta \nu$. Converting energy errors to frequency is simpler: $\Delta \nu = \Delta E / h$. Phrased differently: the errors should be computed as relative errors.
+% (and similar when the energy is in eV; see above).
+
+
+\section*{Monochromatic flux}
+
+The term ``monochromatic flux'' comes in different flavours. Flux density is the most popular, while specific flux is also used. Although dependent on the specific field in which one is working, flux density is the one I come mostly across. I feel, however, that it does not fully cover its meaning: which ``density'' it is supposed to convey is unclear from the naming. Convention has it that this is frequency (or equivalent), but it could equally well be the flux per unit volume of the emitter (or perhaps the detector), eg. $\mathrm{J m^{-2}}\, \mathrm{s^{-1}}\, \mathrm{m^{-3}}$. Or even flux per cow\footnote{Whenever I like to ridicule a point, I will probably use cows. Chickens are not exempt from being used for this purpose either, but they have already been harassed enough in the context of crossing roads. The cow, obviously, is a spherical one.}. Monochromatic flux therefore most correctly indicates what is meant, in my humble opinion. 
+
+
+In SI units, monochromatic flux is expressed in \jmsqshz, which is equivalent to $\mathrm{W}\ \mathrm{m}^{-2}\ \mathrm{Hz^{-1}}$ (W being Watt, of course). In cgs units, this becomes $10^3\, \ergcmsqshz$. For astronomical quantities, where the monochromatic flux of sources is often much smaller than 1 when expressed in these units, it is much more convenient to use Jansky instead: 1 Jy = $10^{-26} \jmsqshz = 10^{-23}\, \ergcmsqshz$. 
+
+It is perhaps good to note that there are basically two units of seconds in the above units, one of them contained as $\mathrm{s}^{-1}$ in the frequency. They do not, however, cancel out, since the first one indicates the amount of energy (usually photons) received per unit area, while the second one indicates the frequency at which this occurs.
+
+When expressing monochromatic flux per unit wavelength instead of unit frequency, one has to take into account the non-straightforward conversion of unit frequency to unit wavelength, as mentioned above. The last part of the unit now becomes $\mathrm{Hz}^{-1} = \mathrm{m}^{-1} \times \frac{\nu^2}{c} = \mathrm{m}^{-1} \times \frac{c}{\lambda^2}$, expressing everything in wavelength. Note that it is necessary to know the frequency (or wavelength) one is dealing with to be able to make this conversion. 
+
+Often, the above are expressed not per meter, but in {\AA}ngstrom or \micron. It is logical to have the the multiplication factor also in in that unit, which results in extra multiplication factors. In addition, there is the option to use erg and \cmsq\ instead of J and $\mathrm{m^{-2}}$. The equations below all have the same value of 1 Jansky; the intermediate steps should indicate where every factor stems from (``learn by example''). The frequency we are dealing with is $1.5 \times 10^{14}\, \mathrm{Hz}$ (2 \micron, or $10^4$ \AA). If the wavelength is expressed in another unit than meter, this is indicated with square brackets: $\lambda = 10^6 \lambda[\micron]$, for example.
+
+\begin{eqnarray*}
+1 \mathrm{Jy} & = & 10^{-26} \jmsqshz \\
+& = & 10^{-23}\, \ergcmsqshz \\
+& = & 10^{-26}\, \mathrm{J}\ \mathrm{m}^{-2}\ \mathrm{s}^{-1}\ \frac{\nu^2}{c} \mathrm{m}^{-1} = 7.49 \times 10^{-7}\, \mathrm{J}\ \mathrm{m}^{-2}\ \mathrm{s}^{-1}\ \mathrm{m}^{-1} \\
+& = & 10^{-26}\, \mathrm{J}\ \mathrm{m}^{-2}\ \mathrm{s}^{-1}\ \frac{c}{\lambda^2} \mathrm{m}^{-1} = 7.49 \times 10^{-7}\, \mathrm{J}\ \mathrm{m}^{-2}\ \mathrm{s}^{-1}\ \mathrm{m}^{-1} \\
+& = & 10^{-32}\, \mathrm{J}\ \mathrm{m}^{-2}\ \mathrm{s}^{-1}\ \frac{c}{\lambda^2} \micron^{-1} = 7.49 \times 10^{-13}\, \mathrm{J}\ \mathrm{m}^{-2}\ \mathrm{s}^{-1}\ \micron^{-1} \\
+& = & 10^{-20}\, \mathrm{J}\ \mathrm{m}^{-2}\ \mathrm{s}^{-1}\ \frac{c}{{\lambda[\micron]}^2} \micron^{-1} = 7.49 \times 10^{-13}\, \mathrm{J} \mathrm{m}^{-2}\ \mathrm{s}^{-1}\ \micron^{-1} \\
+& = & 10^{-17}\, \mathrm{erg}\ \mathrm{cm}^{-2}\ \mathrm{s}^{-1}\ \frac{c}{{\lambda[\micron]}^2} \micron^{-1} = 7.49 \times 10^{-10}\, \mathrm{erg}\ \mathrm{cm}^{-2}\ \mathrm{s}^{-1}\ \micron^{-1} \\
+& = & 10^{-21}\, \mathrm{erg}\ \mathrm{cm}^{-2}\ \mathrm{s}^{-1}\ \frac{c}{{\lambda[\micron]}^2} \mathrm{\AA}^{-1} = 7.49 \times 10^{-14}\, \mathrm{erg}\ \mathrm{cm}^{-2}\ \mathrm{s}^{-1}\ \mathrm{\AA}^{-1} \\
+& = & 10^{-13}\, \mathrm{erg}\ \mathrm{cm}^{-2}\ \mathrm{s}^{-1}\ \frac{c}{{\lambda[\mathrm{\AA}]}^2} \mathrm{\AA}^{-1} = 7.49 \times 10^{-14}\, \mathrm{erg}\ \mathrm{cm}^{-2}\ \mathrm{s}^{-1}\ \mathrm{\AA}^{-1} \\
+\end{eqnarray*}
+
+Notes: 1) the factor $7.49 \times 10^{-7}$ on the third line and below is dependent on the frequency being used, since it sports a conversion factor of $\frac{nu^2}{c}$, 2) $\lambda$ on line 4 and 5 is still in meter; below that, it should be measured in \micron, and in \Angstrom\ in the last line.
+
+To confuse people, one can also use eV or keV instead, both in the energy part (so instead of J or erg) and in the frequency part (instead of Hz). Conversions between the units are giving in the Table \ref{table:energyconversion}. The set of equations above can then continued as follows:
+
+\begin{eqnarray*}
+1 \mathrm{Jy} & = & 10^{-26} \jmsqshz \\
+& = & 10^{-30} \jcmsqshz \\
+& = & 10^{-30} \frac{1}{e}\ \mathrm{eV}\ \mathrm{cm}^{-2}\ \mathrm{s}^{-1} \mathrm{Hz}^{-1} = 6.242 \times 10^{-12}\ \mathrm{eV}\ \mathrm{cm}^{-2}\ \mathrm{s}^{-1} \mathrm{Hz}^{-1} \\
+& = & \frac{10^{-30}}{e}\ \mathrm{eV} \mathrm{cm}^{-2}\ \mathrm{s}^{-1} \frac{e}{h}\ \mathrm{eV}^{-1} = 1.509 \times 10^{3}\ \mathrm{eV} \mathrm{cm}^{-2}\ \mathrm{s}^{-1}\ \mathrm{eV}^{-1} \\
+& = & \frac{10^{-30}}{h}\ \mathrm{keV} \mathrm{cm}^{-2}\ \mathrm{s}^{-1} \mathrm{keV}^{-1} = 1.509 \times 10^{3}\ \mathrm{keV} \mathrm{cm}^{-2}\ \mathrm{s}^{-1}\ \mathrm{keV}^{-1} \\
+\end{eqnarray*}
+
+
+\subsection*{Photons}
+
+Instead of energy flux, one can also use the photon flux. This is more commonly used for broad-band flux, discussed below, but is listed here as well, more as an introduction. In fact, X-ray astronomers plotting ``ufspec'' with XSpec will find these units on the y-axis.
+
+The simple thing one has to remember, is that the photon energy is dependent on the frequency of the wavelength of observed: $E_{\mathrm{ph}} = h \cdot \nu = h \cdot \frac{c}{\lambda} = e \cdot \mathrm{eV}$ J. So one photon at 2 \micron\ equals $9.93 \times 10^{-20}$ J or 0.620 eV, which can then easily be added to the above list:
+
+\begin{eqnarray*}
+1 \mathrm{Jy} & = & 10^{-26} \jmsqshz \\
+& = & \frac{10^{-26}}{h \nu} \mathrm{Ph}\ \mathrm{m}^{-2} \ \mathrm{s}^{-1} \ \mathrm{Hz}^{-1} = 1.01 \times 10^{-7}\ \mathrm{Ph}\ \mathrm{m}^{-2} \ \mathrm{s}^{-1} \ \mathrm{Hz}^{-1} \\
+& = & \frac{10^{-30}}{h \nu} \mathrm{Ph\ cm}^{-2}\ \mathrm{s}^{-1} \ \mathrm{Hz}^{-1} = 1.01 \times 10^{-11}\ \mathrm{Ph\ cm}^{-2}\ \mathrm{s}^{-1} \ \mathrm{Hz}^{-1} \\
+& = & \frac{10^{-30}}{e \cdot \nu[\mathrm{eV}]} \mathrm{Ph\ cm}^{-2} \ \mathrm{s}^{-1}\ \frac{e}{h} \mathrm{eV}^{-1} = 2.402 \times 10^{-35}\  \mathrm{Ph\ cm}^{-2} \ \mathrm{s}^{-1}\ \mathrm{eV}^{-1} \\
+& = & \frac{10^{-30}}{e \cdot \nu[\mathrm{keV}]} \mathrm{Ph\ cm}^{-2} \ \mathrm{s}^{-1}\ \frac{e}{h} \mathrm{keV}^{-1} = 2.402 \times 10^{-38}\  \mathrm{Ph\ cm}^{-2} \ \mathrm{s}^{-1}\ \mathrm{keV}^{-1}\\
+& = & 10^{-30} \cdot \frac{\lambda}{h c}  \frac{c}{\lambda^{2}} \mathrm{Ph}\ \mathrm{cm}^{-2}\ \mathrm{s}^{-1} \mathrm{m}^{-1} = 7.55 \times 10^8\ \mathrm{Ph}\ \mathrm{cm}^{-2}\ \mathrm{s}^{-1} \mathrm{\AA}^{-1} \\
+& = & 10^{-40} \cdot \frac{\lambda}{h c}  \frac{c}{\lambda^{2}} \mathrm{Ph}\ \mathrm{cm}^{-2}\ \mathrm{s}^{-1} \mathrm{\AA}^{-1} = 7.55 \times 10^{-2}\ \mathrm{Ph}\ \mathrm{cm}^{-2}\ \mathrm{s}^{-1} \mathrm{\AA}^{-1} \\
+& = & 10^{-30} \cdot \frac{\lambda[\AA]}{h c}  \frac{c}{\lambda[\AA]^{2}} \mathrm{Ph}\ \mathrm{cm}^{-2}\ \mathrm{s}^{-1} \mathrm{\AA}^{-1} = 7.55 \times 10^{-2}\ \mathrm{Ph}\ \mathrm{cm}^{-2}\ \mathrm{s}^{-1} \mathrm{\AA}^{-1} \\
+\end{eqnarray*}
+
+Again, the multiplication factor one gets is dependent on the wavelength used, twice even when using wavelength units: once to convert Hertz to meter or \Angstrom, and once to obtain the energy of the photons at that frequency\footnote{For the X-ray astronomers: this is why a ``ufspec'' plot in XSpec looks rather different when plotting versus wavelength (\Angstrom) or energy (keV)}.
+
+When working with keV, it is somewhat more likely that one comes across keV as the frequency unit, which originates from the use of photons in broad-band flux for X-ray and $\gamma$-ray wavelengths. 
+
+For sanity's sake, I will just point out that for monochromatic flux, it is rare to use photon flux instead of energy flux.
+
+
+
+
+
+\section*{Magnitude}
+
+While magnitude is in principal a monochromatic flux, it's odd scale warrants a separate section. The odd scale has, of course, to do with the fact that it is over 2000 years old, dating back to Hipparchus (ca. 190 -- 120 BC). The modern usage was formalised by Pogson in 1856.
+
+In addition, one has to take into account the fact that the flux is obtained in a band (the width of the observing filter), which is then implicitly converted to magnitude as an equivalent of monochromatic flux. For this to be accurate, one needs to perform a proper integration, taking into account the spectral shape of the observed source across the observed band. This is often taken care of by using colour corrections, but even this is an approximation. In reality, however, the observing band is relatively small for this effect to be large, and errors on the magnitude are not uncommonly larger than the colour corrections. The section on broad-band flux deals with this (albeit not directly for magnitudes).
+
+The scale of the magnitude system follows from Pogson's definition that 5 steps in increase in magnitude $M$ equals a decrease in monochromatic flux $\fv$ of a factor of 100. Therefore:
+
+\begin{equation*}
+M = M_0 - 2.5\ {}^{10}\!\log \left( \fv / \fvz \right)
+\end{equation*}
+and vice versa:
+\begin{equation*}
+\fv = \fvz \times 10^{- \left( M - M_0 \right) / 2.5}
+\end{equation*}
+
+The zeropoint $M_0$ is set at Vega ($\alpha$ Lyrae), which thus has $M = 0$\footnote{This definition seems to have changed somewhat, causing Vega to have magnitude $0.03$ or $0.04$ in $V$ band, the difference depending on the exact filter system being used. All mentions of Vega in the text, however, assume this is simply 0; $M_0$ is, by definition, 0.}. With this, one can calculate $\fv$ from $M$ using the flux for Vega. Since the flux of Vega is, however, not constant across frequency (but roughly follows a blackbody), these fluxes should be measured in every observing band (filter) of interest. Some of these zero point fluxes are given in Table \ref{table:zeropointfluxes}.
+
+The use of Vega as zero point is somewhat unfortunate, because it is not constant across frequency. In \citeyear{oke1974:apjs27:210}, \citeauthor{oke1974:apjs27:210} published a paper where the fluxes were given in AB magnitudes (later redone in \citet{oke1983:apj226:713}; this paper is generally cited for the definition of AB magnitudes). The definition is:
+
+\begin{equation*}
+\mathrm{AB} = -2.5\ {}^{10}\!\log{\fv} + C
+\end{equation*}
+
+Here, the constant $\fvz$ has been taken out of the logarithm, and is now the constant $C$, $C = -48.60$ when \fv is expressed in \ergcmsqshz (-41.10 when \fv in \jmsqshz, and -8.90 when \fv\ is in Jy). The constant still is set from the flux of Vega in the V-band (albeit Vega actually has a magnitude of 0.03 in the Oke \& Gunn paper of \citeyear{oke1983:apj226:713}).
+
+AB magnitudes have a constant zeropoint when expressed as \fv, ie. per unit frequency. When using wavelengths instead, \fl, the wavelength factor creeps in again (as in the examples in the previous section), together with $c$.
+
+The AB magnitude had not been in more common use until the Hubble Space Telescope was launched, and only with the wide spread use of the Sloan Digital Sky Survey (SDSS) have AB magnitude become standard (together with the above mentioned Johnson-Cousins system, based on Vega). There is actually a slight difference for some filters between the zeropoints used by \citeauthor{oke1983:apj226:713} and used by the SDSS, of order $0.02 \sim 0.04$. For all the details, see the SDSS webpages at \url{http://www.sdss.org/dr6/algorithms/fluxcal.html} (which is really a must-read to learn some of the details about this; see also the SDSS webpage on converting between Johnson-Cousins \& AB magnitudes).
+
+Whether one should be using the AB magnitude system or the Johnson-Cousins system for flux conversions, is most easily deduced from the filter name: lowercase broad-band filter names usually are in the AB magnitude system ($ugriz$, or $u'g'r'i'z'$); uppercase filter names are Johnson-Cousins. Be aware of special filter names though; the context should always indicate which magnitude system to use.
+
+
+
+\begin{table}
+\begin{tabular}{c|r|r|r}
+filter & $\nu_{\mathrm{central}}$ (Hz) & $\lambda_{\mathrm{central}}$ (m) & $F_{\nu, \alpha\mathrm{-Lyr}} (Jy)$ \\
+\hline
+$U$   & $8.294 \times 10^{14}$ & $3.615 \times 10^{-7}$ & 1890 \\
+$B$   & $6.874 \times 10^{14}$ & $4.361 \times 10^{-7}$ & 4020 \\
+$V$   & $5.518 \times 10^{14}$ & $5.433 \times 10^{-7}$ & 3590 \\
+$R$   & $4.680 \times 10^{14}$ & $6.406 \times 10^{-7}$ & 2890 \\
+$R_c$ & $4.680 \times 10^{14}$ & $6.406 \times 10^{-7}$ & 3020 \\
+$I$   & $3.9   \times 10^{14}$ & $7.687 \times 10^{-7}$ & 2280 \\
+$I_c$ & $3.759 \times 10^{14}$ & $7.975 \times 10^{-7}$ & 2380 \\
+$Z$   & $3.071 \times 10^{14}$ & $9.762 \times 10^{-7}$ & 2270 \\
+&&&\\
+$J$   & $2.4   \times 10^{14}$ & $1.249 \times 10^{-6}$ & 1560 \\
+$J_s$ & $2.4   \times 10^{14}$ & $1.249 \times 10^{-6}$ & 1600 \\
+$H$   & $1.8   \times 10^{14}$ & $1.666 \times 10^{-6}$ & 1040 \\
+$K$   & $1.36  \times 10^{14}$ & $2.204 \times 10^{-6}$ &  686 \\
+$K_s$ & $1.40  \times 10^{14}$ & $2.141 \times 10^{-6}$ &  670 \\
+&&&\\
+$u$   & $8.603 \times 10^{14}$ & $3.485 \times 10^{-7}$ & 1540 \\
+$g$   & $6.397 \times 10^{14}$ & $4.686 \times 10^{-7}$ & 3930 \\
+$r$   & $4.859 \times 10^{14}$ & $6.170 \times 10^{-7}$ & 3120 \\
+$i$   & $3.953 \times 10^{14}$ & $7.584 \times 10^{-7}$ & 2510 \\
+$z$   & $3.324 \times 10^{14}$ & $9.019 \times 10^{-7}$ & 2190 \\
+\end{tabular}
+\caption{\label{table:zeropointfluxes}
+Flux zero points and central frequencies for the most used filters in the Johnson-Cousins system. The ugriz filters are also listed, including the flux of Vega in the respective filters, but any conversion between magnitude and flux should follow the definition for AB magnitudes. Zero points for optical filters are from \citeauthor{fukugita1995:pasp107:945} (\citeyear{fukugita1995:pasp107:945}; the ugriz zero points are in fact retrieved from the SDSS web site, but the paper is directly related to that calibration), while those for the near infrared are from \citet{tokunaga2005:pasp117:421}, as listed on the UKIRT webpage: \url{http://jach.hawaii.edu/UKIRT/astronomy/utils/conver.html}. The filters with a subscript are generally slight modifications of the original filters, having a better efficiency or avoiding some particular frequency part of the atmosphere.}
+\end{table}
+
+
+\section*{Broad-band flux}
+
+Broad-band flux is, in the definition used here, the flux specified within a frequency range. As mentioned, this is actually valid for magnitudes, but there the broad-band flux is automatically and almost invisibly converted to monochromatic flux. Broad-band flux is mostly used when dealing in the X-ray or $\gamma$-ray regime: the stable conditions (space) allow for an accurate and stable determination of the instrument sensitivity, the ``response matrix'' (the equivalent of the filter curve in optical astronomy); this would not work well on Earth, where the atmosphere is an ever changing factor. In addition, the fact that generally the position \emph{and} energy of an incoming photon is stored, allows for a flux and spectral determination of the source at the same time, thus obtaining the flux characteristics across a frequency range.
+
+(The following section in large part follows a single-page document by Paul Green  that I scoured of the internet: \url{http://hea-www.harvard.edu/~pgreen/figs/xraydefs.pdf}. Another information resource was a little email piece written bij Ralph Wijers.)
+
+To convert broad-band flux to an equivalent monochromatic flux, one has to know the spectrum of the source: it requires an integration over the frequency range of interest. If the source spectrum is a function $\fv (\nu)$ (ie, the monochromatic flux function), the broad-band flux $F$ (no subscript $\nu$) between $\nu_1$ and $\nu_2$ is:
+
+\begin{equation*}
+F = \int_{\nu_1}^{\nu_2} \fv (\nu) d\nu
+\end{equation*}
+
+For any conversion, we want this to be equivalent to some monochromatic flux at a frequency $\nu_{\mathrm{c}}$ that lies between  $\nu_1$ and $\nu_2$, eg. the average of the two (for a lot of spectra and frequency ranges, the logarithmic average $\nu_{\mathrm{c}} = 10^{({}^{10}\log (\nu_1 * \nu_2))/2}$ is a more logical choice). We can write the source spectrum as $\fvc \cdot S (\nu)$, with $S (\nu_c) = 1$, so that \fvc\ becomes the normalisation factor of the spectrum. We then get:
+
+\begin{equation*}
+F = \int_{\nu_1}^{\nu_2} \fvc\ S (\nu) d\nu 
+\end{equation*}
+
+If we perform the integration, we can then move \fvz\ to one side of the equal sign, and $F$ to the other. The factor between the two is the multiplication factor you need to multiply the broad-band flux by to obtain the equivalent monochromatic flux at frequency $\nu_c$. 
+
+An example will be clearer. One of the most common spectral shapes in X-ray and $\gamma$-ray astronomy is a power law, $\fv (\nu) = \fvc\ \cdot ({\frac{\nu}{\nu_c}})^{\alpha}$ ($\alpha$ usually being negative, often around $-1.1$). Sometimes, $\beta$ is used instead of $\alpha$, and $\alpha$ is then a temporal index and totally unrelated to the spectrum. Also, $\alpha$ is sometimes used as its negative counterpart, and the above equation then becomes $\fv (\nu) = \fvc \cdot {(\frac{\nu}{\nu_c})}^{-\alpha}$. Do \emph{not}, however, confuse $\alpha$ with $\Gamma$, which is discussed later. Substituting this and integrating the equation results in:
+
+\begin{eqnarray*}
+F & = & \int_{\nu_1}^{\nu_2} \fvc\ S (\nu) d\nu \\
+& = & \int_{\nu_1}^{\nu_2} \fvc\ \cdot  {(\frac{\nu}{\nu_c})}^{\alpha} d\nu \\
+& = & \fvc\ \frac{\nu_c}{\alpha+1} \left[ {(\frac{\nu}{\nu_c})}^{\alpha+1} \right]_{\nu_1}^{\nu_2} \\
+& = & \fvc \frac{\nu_c}{\alpha+1} \left( {(\frac{\nu_2}{\nu_c})}^{\alpha+1} - {(\frac{\nu_1}{\nu_c})}^{\alpha+1} \right) \\
+& = & \fvc \frac{{\nu_c}^{-\alpha}}{\alpha+1} \left( {\nu_2}^{\alpha+1} - {\nu_1}^{\alpha+1} \right) \\
+\end{eqnarray*}
+%& = & \fv \frac{{\nu_2}^{\alpha+1} - {\nu_1}^{\alpha+1}}{\nu^{\alpha} (\alpha+1)}, \\
+
+The monochromatic flux at any desired frequency $\nu_c$ as a function of the broad-band flux $F$ is therefore:
+
+\begin{equation*}
+\fvc = \frac{(1+\alpha) {\nu_c}^{\alpha}}{{\nu_2}^{\alpha+1} - {\nu_1}^{\alpha+1}} F
+\end{equation*}
+
+Be aware that this integral only works as long as $\alpha \neq -1$; if that is not the case, the primitive of the above integral becomes a natural logarithm, and life is a lot simpler: 
+\begin{equation*}
+\fvc = \frac{1}{\nu_c \ln (\nu_2/\nu_1)} F
+\end{equation*}
+
+In X-rays, it is more common to use energy $E$ instead of frequency $\nu$. Substituting $E = h \nu$, we get (to be overly clear, with the risk of insulting the reader: several $h^{\alpha}$ cancel out, to leave just one factor $h$):
+
+\begin{equation*}
+\fEc = \frac{h (1+\alpha) {E_c}^{\alpha}}{{E_2}^{(\alpha+1)} - {E_1}^{(\alpha+1)}} F,
+\end{equation*}
+where F is in $\mathrm{J}\ \mathrm{m}^{-2}\ \mathrm{s^{-1}}$, \fvc\ in \jmsqshz\ and \fEc\ in $\mathrm{J}\ \mathrm{m}^{-2}\ \mathrm{s^{-1}} \mathrm{J^{-1}}$.
+
+If we want to express energy in keV instead, as is more common, this adds another conversion factor $\mathrm{J} = 10^{3} e\; \mathrm{keV}$, so
+
+\begin{equation*}
+\fEc = 10^{-3} \frac{h}{e} \cdot \frac{(1+\alpha) {\left(E[\mathrm{keV}]\right)}^{\alpha}}{{\left(E_2[\mathrm{keV}]\right)}^{(\alpha+1)} - {\left(E_1[\mathrm{keV}]\right)}^{(\alpha+1)}} F.
+\end{equation*}
+
+From this, we can derive the conversion factors to go from unit to another. Most of the time, broad-band (energy) flux is expressed in \ergcmsqs, and the monochromatic flux therefore would be in \ergcmsqshz. So with broad-band flux in \ergcmsqs\ and the equivalent monochromatic flux in Jansky, this would become (still sticking to the power law spectrum):
+
+\begin{equation*}
+\fvc[Jy] = 10^{23} \frac{(1+\alpha) {\nu_c}^{\alpha}}{{\nu_2}^{(\alpha+1)} - {\nu_1}^{(\alpha+1)}} F[\ergcmsqs]
+\end{equation*}
+
+With energy expressed in keV again, the above becomes:
+
+\begin{eqnarray*}
+\fvc[\mathrm{erg}\ \mathrm{cm}^{-2}\ \mathrm{s^{-1}} \mathrm{Hz^{-1}}] & = & \frac{(1+\alpha) {\left(\nu_c\mathrm{[Hz]}\right)}^{\alpha}}{{{\left(\nu_2\mathrm{[Hz]}\right)}}^{(\alpha+1)} - {\left(\nu_1\mathrm{[Hz]}\right)}^{(\alpha+1)}} F[\mathrm{erg}\ \mathrm{cm}^{-2}\ \mathrm{Hz^{-1}}] \\
+\fvc[\mathrm{erg}\ \mathrm{cm}^{-2}\ \mathrm{s^{-1}} \mathrm{Hz^{-1}}] & = & 10^{-3} \frac{h}{e} \frac{(1+\alpha) {\left(E_c\mathrm{[keV]}\right)}^{\alpha}}{{\left(E_2\mathrm{[keV]}\right)}^{(\alpha+1)} - {\left(E_1\mathrm{[keV]}\right)}^{(\alpha+1)}} F[\mathrm{erg}\ \mathrm{cm}^{-2}\ \mathrm{s^{-1}}] \\
+\fvc[\mathrm{erg}\ \mathrm{cm}^{-2}\ \mathrm{s^{-1}} \mathrm{Hz^{-1}}] & = & \frac{(1+\alpha) {\left(E_c\mathrm{[keV]}\right)}^{\alpha}}{{\left(E_2\mathrm{[keV]}\right)}^{(\alpha+1)} - {\left(E_1\mathrm{[keV]}\right)}^{(\alpha+1)}} F[\mathrm{erg}\ \mathrm{cm}^{-2}\ \mathrm{{keV}^{-1}}] \\
+\fvc[\mathrm{erg}\ \mathrm{cm}^{-2}\ \mathrm{s^{-1}} \mathrm{Hz^{-1}}] & = & 10^{-23}\ \frac{1}{h} \frac{(1+\alpha) {\left(E[\mathrm{keV}]\right)}^{\alpha}}{{\left(E_2\mathrm{[keV]}\right)}^{(\alpha+1)} - {\left(E_1\mathrm{[keV]}\right)}^{(\alpha+1)}} F[\mathrm{keV}\ \mathrm{cm}^{-2}\ \mathrm{{keV}^{-1}}] \\
+\fvc[Jy] & = & \frac{1}{h} \frac{(1+\alpha) {\left(E_c\mathrm{[keV]}\right)}^{\alpha}}{{\left(E_2\mathrm{[keV]}\right)}^{(\alpha+1)} - {\left(E_1\mathrm{[keV]}\right)}^{(\alpha+1)}} F[\mathrm{keV}\ \mathrm{cm}^{-2}\ \mathrm{{keV}^{-1}}] \\
+\end{eqnarray*}
+
+The first three of the above set of equations will be the ones mostly used; in particular the second conversion (to go straight from $\mathrm{erg}\ \mathrm{cm}^{-2}\ \mathrm{s^{-1}}$ to Jansky, with the energy range given in keV, the complete multiplication factor becomes $10^{-3} \frac{h}{e} 10^{23} = 4.136 \cdot 10^{5}$).
+
+\subsection*{Photons}
+
+As before, fluxes can be expressed in photons instead Joules or erg. With broad-band fluxes, this is more common, although it does add some complexity: one has to convert between the photon flux and energy flux first. 
+
+Sticking with the power law, we can express our spectrum in photons counts by using the energy form of the equation, but dividing by the energy per photon (using $P$ instead of $F$ to denote photon flux, and keeping with the more common $E$ instead of $\nu$):
+
+\begin{equation*}
+P_E = \pEc \cdot \frac{E^{\alpha}}{E} = \pEc \cdot E^{(\alpha-1)}
+\end{equation*}
+
+This is usually expressed as $\pEc \cdot E^{-\Gamma}$, with $\Gamma$ the \emph{photon number index} equal to $1-\alpha$. (If we were using $\fv\ (\nu) = \fvc \cdot \nu^{-\alpha}$, $\Gamma = \alpha-1$, which may look more familiar.)
+
+
+\section*{Resources}
+
+\subsection*{Conversion tools on the web}
+
+\begin{list}{$\bullet$}{\setlength{\rightmargin}{0cm} \setlength{\itemsep}{-2mm} \setlength{\leftmargin}{4mm} \setlength{\itemindent}{1mm}}
+%\item my own home-backed \href{https://wonder.star.le.ac.uk:8080/grb/tools/flux/}{conversion tool}. It allows for converting a complete (ASCII) dataset at once. More conversion are to be added over time
+\item The \href{http://www.stsci.edu/hst/nicmos/tools/conversion_form.html}{NICMOS conversion tool}. Will only convert from and to monochromatic fluxes (including magnitudes), and does not include any (k)eV units.
+\item \href{http://heasarc.nasa.gov/Tools/w3pimms.html}{webPIMMS}, on the \href{http://heasarc.nasa.gov/docs/tools.html}{HEASARC tools} webpages. While most conversions are between broad-band fluxes (and instrumental count rates), there is an option to use monochromatic flux as well (``FDensity''). All fluxes should be specified in \ergcmsqs.
+\end{list}
+
+\subsection*{Useful readings on the web}
+
+\begin{list}{$\bullet$}{\setlength{\rightmargin}{0cm} \setlength{\itemsep}{-2mm} \setlength{\leftmargin}{4mm} \setlength{\itemindent}{1mm}}
+\item \href{http://www.sdss.org/dr6/algorithms/fluxcal.html}{SDSS photometric flux calibration \& algorithms}.
+\item Paul Green's \href{http://hea-www.harvard.edu/~pgreen/figs/xraydefs.pdf}{``sorting out $\alpha$ and $\Gamma$ for X-rays''} document (PDF file).
+\end{list}
+
+
+
+\bibliography{references}
+
+\end{document}
