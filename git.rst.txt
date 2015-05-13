@@ -243,6 +243,26 @@ git checkout master
 git merge better_branch             # fast-forward master up to the merge
 
 
+Clean a directory (repository) of untracked (non-project) files
+---------------------------------------------------------------
+
+
+Remove untracked files:
+
+    $ git clean -f
+
+-f: force
+-d to clean directories instead of files (-x)
+-x to clean also files in .ignore
+-X to only clean files in .ignore
+
+Use -n for a dry-run.
+
+Also: show ignored files:
+$ git clean -ndX
+
+
+
 
 Serving a GIT repository
 ------------------------
